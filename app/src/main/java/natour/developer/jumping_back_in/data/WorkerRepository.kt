@@ -2,6 +2,7 @@ package natour.developer.jumping_back_in.data
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
@@ -18,9 +19,11 @@ interface WorkerRepository{
     fun cancelWork()
 }
 
+const val TAG = "repository"
+
 class WorkerRepositoryImpl(context: Context): WorkerRepository{
 
-    private val imageUri: Uri = context.getImageUri()
+//    private val imageUri: Uri = context.getImageUri()
     private val workManager = WorkManager.getInstance(context)
 
     override val outputWorkInfo: Flow<WorkInfo>
@@ -38,6 +41,7 @@ class WorkerRepositoryImpl(context: Context): WorkerRepository{
 
     private fun createInputDataForWorkRequest(blurLevel: Int, imageUri: Uri): Data {
         val builder = Data.Builder()
+        Log.d(TAG, imageUri.toString())
         builder.putString(KEY_IMAGE_URI, imageUri.toString()).putInt(KEY_BLUR_LEVEL, blurLevel)
         return builder.build()
     }
